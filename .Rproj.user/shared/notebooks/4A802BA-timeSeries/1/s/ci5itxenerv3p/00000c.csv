@@ -1,3 +1,4 @@
+"0","# agrupamos por año y mes y tomamos el maximo de cada uno"
 "0","datos = datos %>%"
 "0","mutate(month = format(Fecha, ""%m""), year = format(Fecha, ""%Y"")) %>%"
 "0","group_by(year, month) %>%"

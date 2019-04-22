@@ -1,0 +1,3 @@
+"0","serie.ts.log = log(serie.ts)"
+"0","serie.log = log(serie)"
+"0","plot(decompose(serie.ts.log))"

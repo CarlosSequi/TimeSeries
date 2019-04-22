@@ -1,0 +1,4 @@
+"0","# para train"
+"0","tiempo = 1:length(serie)"
+"0","# para test"
+"0","tiempoTs = (tiempo[length(tiempo)]+1):(tiempo[length(tiempo)]+Npred)"

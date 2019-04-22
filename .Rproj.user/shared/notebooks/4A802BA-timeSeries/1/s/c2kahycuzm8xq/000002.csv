@@ -1,0 +1,4 @@
+"0","# tendencia estimada para los datos de train"
+"0","tendEstimadaTr =  parametros.H1$coefficients[1] + tiempo*parametros.H1$coefficients[2] "
+"0","# tendencia estimada para las predicciones de test"
+"0","tendEstimadaTs =  parametros.H1$coefficients[1] + tiempoTs*parametros.H1$coefficients[2] "
