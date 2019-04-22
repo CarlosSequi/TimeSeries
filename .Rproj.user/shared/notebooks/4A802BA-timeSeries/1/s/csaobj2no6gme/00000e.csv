@@ -1,0 +1,1 @@
+"0","serie = serie[complete.cases(serie),]"

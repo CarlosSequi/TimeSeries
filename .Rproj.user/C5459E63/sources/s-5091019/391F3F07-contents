@@ -42,10 +42,10 @@ Eliminamos las instancias(días) donde hay al menos algún valor NA
 serie = serie[complete.cases(serie),]
 ```
 
-Setting train and test datasets. For monthly prediction of maximun temperature we'll use as test the last month of the data (February, 28 days).
+
+
 ```{r}
-Ntest = 28 # number of data that I will use for test
-Npred = 2 # number of data that I want to predict (March and April's maximun temperature)
+Npred = 2 # cantidad de datos a predecir (temperaturas máximas de marzo y abril)
 serie.ts = ts(serie, frequency = 12) # frequency set to 12 to set stationality each 12 months
 plot(decompose(serie.ts))
 ```
