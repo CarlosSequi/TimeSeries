@@ -1,1 +1,3 @@
-"0","serie = read.csv(""5515X.csv"", header = TRUE, sep="";"")"
+"0","datos = read.csv(""5515X.csv"", header = TRUE, sep="";"")"
+"0","datos = datos[,c(""Fecha"",""Tmax"")]"
+"0","datos$Fecha = as.Date(datos$Fecha)"

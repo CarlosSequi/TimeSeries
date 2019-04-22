@@ -1,7 +1,0 @@
-"0","Ntest = 2 # number of data that I will use for test"
-"0","Npred = 2 # number of data that I want to predict (March and April's maximun temperature)"
-"0","serie.ts = ts(serie, frequency = 12) # frequency set to 12 to set stationality each 12 months"
-"0","plot(decompose(serie.ts))"
-"2","Error in plotts(x = x, y = y, plot.type = plot.type, xy.labels = xy.labels,  : 
-  cannot plot more than 10 series as ""multiple""
-"
