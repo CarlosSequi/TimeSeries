@@ -1,0 +1,4 @@
+"0","Npred = 7 # cantidad de datos a predecir (temperaturas máximas de marzo y abril)"
+"0","serie = datos$Tmax"
+"0","serie.ts = ts(serie, frequency = 365) # frequency set to 12 to set stationality each 12 months"
+"0","plot(decompose(serie.ts))"

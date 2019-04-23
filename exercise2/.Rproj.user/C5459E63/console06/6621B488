@@ -1,0 +1,17 @@
+[?25l[0mMicrosoft Windows [Versión 10.0.17763.437][0K
+(c) 2018 Microsoft Corporation. Todos los derechos reservados.[0K
+[0K
+E:\ETSIIT\MÁSTER\Series temporales y mineria de flujos de datos\practicas serie[0Ks
+ temporales\practica personal\TimeSeries\exercise2>[0K[0m[1;1H[2J[0m temporales\practica personal\TimeSeries\exercise2>head(decompose(serie.ts.log)[0K$[?25l
+seasonal)[0K
+"head" no se reconoce como un comando interno o externo,[0K
+programa o archivo por lotes ejecutable.[0K
+[0K
+E:\ETSIIT\MÁSTER\Series temporales y mineria de flujos de datos\practicas serie[0Ks
+ temporales\practica personal\TimeSeries\exercise2>[0K[?25h[?25l[6A temporales\practica personal\TimeSeries\exercise2>head(decompose(serie.ts.log)$seasonal)[0K
+"head" no se reconoce como un comando interno o externo,[0K
+programa o archivo por lotes ejecutable.[0K
+[0K
+E:\ETSIIT\MÁSTER\Series temporales y mineria de flujos de datos\practicas series temporales\practica personal\TimeSeries\exercise2>[0K
+[0K
+[0K[2A[132G[?25h

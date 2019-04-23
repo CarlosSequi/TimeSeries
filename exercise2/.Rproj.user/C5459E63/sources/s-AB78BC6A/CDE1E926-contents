@@ -50,21 +50,11 @@ Eliminamos las instancias(días) donde hay al menos algún valor NA de temperatu
 datos = datos[complete.cases(datos),]
 ```
 
-La serie que nos interesa es la temperatura máxima de cada uno de los meses, es decir, obtenemos la temperatura máxima de cada mes de cada año:
-```{r}
-# agrupamos por año y mes y tomamos el maximo de cada uno
-datos = datos %>%
-mutate(month = format(Fecha, "%m"), year = format(Fecha, "%Y")) %>%
-group_by(year, month) %>%
-summarise(total = max(Tmax))
-
-serie = datos$total # aqui estan las temperaturas máximas de cada mes de todos los años
-```
-
 Obtenemos ahora la cantidad de datos a predecir y la serie temporal en sí
 ```{r}
-Npred = 2 # cantidad de datos a predecir (temperaturas máximas de marzo y abril)
-serie.ts = ts(serie, frequency = 12) # frequency set to 12 to set stationality each 12 months
+Npred = 7 # cantidad de datos a predecir (temperaturas máximas de marzo y abril)
+serie = datos$Tmax
+serie.ts = ts(serie, frequency = 365) # frequency set to 12 to set stationality each 12 months
 plot(decompose(serie.ts))
 ```
 
@@ -73,3 +63,97 @@ Observamos en la gráfica:
 -la tendencia calculada mediante filtros  
 -la estacionalidad repetida cada 12 instantes de tiempo
 -lo que queda de la serie al eliminar tendencia y estacionalidad
+
+
+Probamos, como hemos hecho en experimentos anteriores, a realizar una transformación logarítmica de la serie para reducir la varianza y así evitar problemas con el cálculo de la estacionariedad:
+```{r}
+serie.ts.log = log(serie.ts) 
+serie.log = log(serie) 
+plot(decompose(serie.ts.log))
+```
+
+El cambio es relativamente muy pequeño, es posible que tenga mucho que ver la gran cantidad de datos, siendo difícil distinguir la variación entre la gráfica anterior y esta. Aún así, por precaución, tomaremos esta serie por válida.  
+
+Observamos los datos de estacionalidad que nos servirán en el futuro para eliminársela a la serie temporal.
+```{r}
+head(decompose(serie.ts.log)$seasonal)
+```
+
+Por simplicidad en el uso de la nomenclatura utilizare la variable serie en lugar de serie.log
+```{r}
+serie = serie.log
+```
+
+
+Calculamos los instantes de tiempo de la serie
+```{r}
+# para train
+tiempo = 1:length(serie.ts.log)
+# para test
+tiempoTs = (tiempo[length(tiempo)]+1):(tiempo[length(tiempo)]+Npred)
+```
+
+
+Representamos la serie
+```{r}
+plot.ts(serie, xlim=c(1, tiempoTs[length(tiempoTs)]))
+```
+
+
+
+
+Modelamos la tendencia, la cual podemos aparentemente ajustarla de forma lineal, sabiendo que:   
+serie = parametroA * tiempo + parametroB   
+Con ayuda de la función lm calculamos dichos parámetros: 
+```{r}
+parametros.H1 = lm(serie ~tiempo) 
+parametros.H1
+```
+
+Tomamos Intercept como termino independiente (parametroB) y el otro como el que multiplica al tiempo para poder calcular la serie (parametroA). Para modelar la tendencia usamos la fórmula descrita antes:
+```{r}
+# tendencia estimada para los datos de train 
+tendEstimadaTr = parametros.H1$coefficients[1] + tiempo*parametros.H1$coefficients[2] 
+# tendencia estimada para las predicciones de test 
+tendEstimadaTs = parametros.H1$coefficients[1] + tiempoTs*parametros.H1$coefficients[2] 
+```
+
+
+
+Comprobamos visualmente si la tendencia se ajusta al modelo que tenemos de la serie temporal: 
+
+
+```{r}
+plot.ts(serie, xlim=c(1, tiempoTs[length(tiempoTs)])) 
+lines(tiempo, tendEstimadaTr, col = "blue") 
+lines(tiempoTs, tendEstimadaTs, col = "green")
+```
+
+Podemos observar como se ajustan tanto la tendencia para los datos de train como la estimada para los datos de test.  
+
+A continuación procedemos a validar de forma estadística que el modelo linel creado sea correcto. Con el test de Jarque Bera comprobamos si los errores siguen una distribución normal a lo largo del tiempo.
+```{r}
+JB = jarque.bera.test(parametros.H1$residuals)
+JB
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
