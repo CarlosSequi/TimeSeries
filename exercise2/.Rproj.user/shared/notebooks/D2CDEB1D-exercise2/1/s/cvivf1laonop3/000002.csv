@@ -1,1 +1,1 @@
-"0","datos = datos[complete.cases(datos),]"
+"0","datos$Tmax[is.na(datos$Tmax)] = median(datos$Tmax, na.rm = T)"

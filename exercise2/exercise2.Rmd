@@ -45,9 +45,9 @@ Veamos los valores NA...
 apply(datos, 2, function(atributo){sum(is.na(atributo))})
 ```
 
-Eliminamos las instancias(días) donde hay al menos algún valor NA de temperatura máxima
+Imputamos el valor de la mediana en las temperaturas máximas donde existan valores perdidos con el fin de no tergiversar los datos eliminando días del año.
 ```{r}
-datos = datos[complete.cases(datos),]
+datos$Tmax[is.na(datos$Tmax)] = median(datos$Tmax, na.rm = T)
 ```
 
 Obtenemos ahora la cantidad de datos a predecir y la serie temporal en sí
@@ -105,22 +105,101 @@ plot.ts(serie, xlim=c(1, tiempoTs[length(tiempoTs)]))
 Modelamos la tendencia, la cual podemos aparentemente ajustarla de forma lineal, sabiendo que:   
 serie = parametroA * tiempo + parametroB   
 Con ayuda de la función lm calculamos dichos parámetros: 
+
 ```{r}
 parametros.H1 = lm(serie ~tiempo) 
 parametros.H1
 ```
 
 Tomamos Intercept como termino independiente (parametroB) y el otro como el que multiplica al tiempo para poder calcular la serie (parametroA). Para modelar la tendencia usamos la fórmula descrita antes:
+```{r}
+# tendencia estimada para los datos de train 
+tendEstimadaTr = parametros.H1$coefficients[1] + tiempo*parametros.H1$coefficients[2] 
+# tendencia estimada para las predicciones de test 
+tendEstimadaTs = parametros.H1$coefficients[1] + tiempoTs*parametros.H1$coefficients[2] 
+```
+
+
+
+Comprobamos visualmente si la tendencia se ajusta al modelo que tenemos de la serie temporal: 
+
+
+```{r}
+plot.ts(serie, xlim=c(1, tiempoTs[length(tiempoTs)])) 
+lines(tiempo, tendEstimadaTr, col = "blue") 
+lines(tiempoTs, tendEstimadaTs, col = "green")
+```
+
+Podemos observar los ajustes tanto de la tendencia para los datos de train como de la estimada para los datos de test.  
+
+A continuación procedemos a validar de forma estadística que el modelo lineal creado sea correcto. Con el test de Jarque Bera comprobamos si los errores siguen una distribución normal a lo largo del tiempo.
+```{r}
+JB = jarque.bera.test(parametros.H1$residuals)
+JB
+```
 
 
 
 
 
 
+Como el valor del p-value es inferior a 0.05, no podemos asegurar que los residuos no guarden una diferencia significativa con los datos de una distribución normal, por lo que procedemos a intentar ajustar la tendencia con otro modelo, esta vez cuadrático.
 
 
 
 
+
+```{r}
+# calculo de parámetros
+parametros.H1 = lm(serie ~tiempo + I(tiempo^2)) 
+parametros.H1
+
+# tendencia estimada para los datos de train 
+tendEstimadaTr = parametros.H1$coefficients[1] + tiempo*parametros.H1$coefficients[2]  + tiempo*parametros.H1$coefficients[3] 
+# tendencia estimada para las predicciones de test 
+tendEstimadaTs = parametros.H1$coefficients[1] + tiempoTs*parametros.H1$coefficients[2]  + tiempoTs*parametros.H1$coefficients[3] 
+```
+
+
+
+Comprobamos visualmente si la tendencia se ajusta al modelo que tenemos de la serie temporal: 
+
+
+```{r}
+plot.ts(serie, xlim=c(1, tiempoTs[length(tiempoTs)])) 
+lines(tiempo, tendEstimadaTr, col = "blue") 
+lines(tiempoTs, tendEstimadaTs, col = "green")
+```
+
+Validamos de forma estadística de nuevo con el test de Jarque Bera, con el que comprobamos si los errores siguen una distribución normal a lo largo del tiempo.
+```{r}
+JB = jarque.bera.test(parametros.H1$residuals)
+JB
+```
+
+Tras probar con estos dos modelos, me decido por realizar diferenciación tantas veces como sea necesario con tal de suazivar la tendencia:
+
+
+
+Probamos de nuevo...
+```{r}
+# calculo de parametros
+parametros.H1 = lm(serie ~tiempo)
+
+# tendencia estimada para los datos de train 
+tendEstimadaTr = parametros.H1$coefficients[1] + tiempo*parametros.H1$coefficients[2] 
+# tendencia estimada para las predicciones de test 
+tendEstimadaTs = parametros.H1$coefficients[1] + tiempoTs*parametros.H1$coefficients[2] 
+
+# representacion de la tendencia sobre la serie
+plot.ts(serie, xlim=c(1, tiempoTs[length(tiempoTs)])) 
+lines(tiempo, tendEstimadaTr, col = "blue") 
+lines(tiempoTs, tendEstimadaTs, col = "green")
+
+# test de normalizacion Jarque Bera
+JB = jarque.bera.test(parametros.H1$residuals)
+JB
+```
 
 
 
