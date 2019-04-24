@@ -1,5 +1,0 @@
-"0","# calculo de parametros"
-"0","parametros.H1 = lm(diff(serie) ~(1:length(diff(serie))))"
-"2","Error in model.frame.default(formula = diff(serie) ~ (1:length(diff(serie))),  : 
-  variable lengths differ (found for 'length(diff(serie))')
-"
