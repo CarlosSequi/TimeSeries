@@ -283,10 +283,10 @@ pacf(serie.sinEst)
 ```
 
 
-Observando los gráficos ofrecidos por acf y pacf, y sabiendo que la serie es estacionaria gracias al test de Dickey-Fuller, me resulta coherente pensar en un modelo de medias móviles de grado 5 para modelar la serie temporal mediante ARIMA. La elección del modelo es debido a que en pacf existe una bajada en los datos drástica y una estabilización en forma de ''olas'', escogiendo el grado del modelo con ayuda del ultimo de los datos que traspasan de forma clara el umbral mínimo en el gráfico acf. Entrenamos el modelo escogido a continuación:
+Observando los gráficos ofrecidos por acf y pacf, y sabiendo que la serie es estacionaria gracias al test de Dickey-Fuller, me resulta coherente pensar en un modelo de medias móviles de grado 22 para modelar la serie temporal mediante ARIMA. La elección del modelo es debido a que en pacf existe una bajada en los datos drástica y una estabilización en forma de ''olas'', escogiendo el grado del modelo con ayuda del ultimo de los datos que traspasan de forma clara el umbral mínimo en el gráfico acf. Entrenamos el modelo escogido a continuación:
 ```{r}
 # coeficiente de autoregresión = 0, diferenciaciones = 0, coeficiente de medias moviles = 0 
-modelo = arima(serie.sinEst, order = c(0,0,5))
+modelo = arima(serie.sinEst, order = c(0,0,22))
 # calculamos las predicciones 
 predicciones = predict(modelo, n.ahead = Npred) 
 valoresPredichos = predicciones$pred 
@@ -295,14 +295,30 @@ valoresPredichos
 
 Observamos ahora de forma visual el modelo incluyendo la serie sin estacionalidad:
 ```{r}
-plot.ts(serie.sinEst, xlim=c(1, tiempoTs[length(tiempoTs)])) 
+plot.ts(serie.sinEst, xlim=c(1500, tiempoTs[length(tiempoTs)])) 
 lines(tiempoTs,valoresPredichos, col="green")
 ```
 
+Parece ser que las predicciones obtenidas hasta el momento caen dentro de los límites razonables de la serie.  
 
+Finalmente probamos la validez de nuestro modelo (sus errores) mediante tests estadísticos.  
+Aplicamos varios: Test de Box-Pierce: comprobamos que los residuos que nos quedan son aleatorios: 
+```{r}
+Box.test(modelo$residuals)
+```
 
+Este valor de p-value nos dice con un 95% de conﬁanza que los errores obtenidos por el modelo creado son aleatorios, por lo que el modelo queda validado por este test. Continuamos con los tests de normalidad.  
 
+Jarque Bera: vemos si los residuos, aunque aleatorios, son normales (media cero y desviación típica la que sea). 
+```{r}
+jarque.bera.test(modelo$residuals)
+```
 
+Saphiro-Wilk: mismo cometido que Jarque Bera
+
+```{r}
+shapiro.test(modelo$residuals)
+```
 
 
 
