@@ -1,8 +1,6 @@
-#' ---
-#' title: 'Series temporales, práctica 1: conjunto de datos meteorológicos de Granada-aeropuerto Chauchina medidos por AEMET.'
-#' author: "Carlos Manuel Sequí Sánchez"
-#' output: pdf_document
-#' ---
+#' Carlos Manuel Sequí Sánchez dni: 20 48 69 26 K
+#' sequi96@correo.ugr.es
+#' Ejercicio guiado curso 2018-2019
 #' 
 #' \section{Problema 1. ¿Qué valores de temperatura máxima, a escala mensual, se espera que tengan los meses de Marzo y de Abril de 2018?}
 #'  

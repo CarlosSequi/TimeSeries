@@ -1,0 +1,23 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1556224087785.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3774232062",
+    "id" : "F0B27C6",
+    "lastKnownWriteTime" : 1556126036,
+    "last_content_update" : 1556126036,
+    "path" : "E:/ETSIIT/MÁSTER/Series temporales y mineria de flujos de datos/practicas series temporales/practica personal/TimeSeries/exercise2/exercise2.Rmd",
+    "project_path" : "exercise2.Rmd",
+    "properties" : {
+        "cursorPosition" : "358,0",
+        "scrollLine" : "346",
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}
