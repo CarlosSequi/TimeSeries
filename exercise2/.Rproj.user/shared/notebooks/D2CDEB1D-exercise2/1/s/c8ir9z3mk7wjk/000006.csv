@@ -1,5 +1,0 @@
-"0","k = 365 # aquí guardamos los datos estacionales "
-"0","estacionalidad = decompose(serie.ts.log)$seasonal[1:k]"
-"0","# elminamos la estacionalidad"
-"0","serie.sinEst = serie - estacionalidad"
-"2","longer object length is not a multiple of shorter object length"
